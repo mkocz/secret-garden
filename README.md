@@ -19,6 +19,7 @@ Secret Garden is a simple e-commerce application for garden plants. It allows us
 npm install
 npx prisma generate
 nest start
+````
 
 ### Frontend
 ```bash
