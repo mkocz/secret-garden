@@ -1,0 +1,33 @@
+@import '../../styles/settings.scss';
+
+.hero {
+  padding: $base-size;
+}
+
+.subtitle {
+  margin-top: (-$base-size * 3);
+  padding: ($base-size * 4) 0;
+  text-align: left;
+  font-size: ($base-size * 2);
+  font-style: italic;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 2rem;
+    font-style: italic;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.hero {
+    background-size: cover;
+    background-position: center;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-bottom: 2rem;
+}
