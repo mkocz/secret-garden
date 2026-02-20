@@ -1,4 +1,3 @@
-
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { IMGS_URL } from '../../config';
@@ -9,7 +8,7 @@ const ProductCard = ({ name, description, images, id, price }) => {
     const navigate = useNavigate()
 
     return (
-        <Card style={{ width: '18rem' }}>
+        <Card className={styles.card}>
             <Card.Img variant="top" className={styles.productImage}
                 src={IMGS_URL + images?.[0]}
                 alt={name}

@@ -1,5 +1,5 @@
 import PageTitle from '../PageTitle/PageTitle';
-import { decreaseQuantity, getAll, getCount, getTotalPrice, increaseQuantity, removeProduct, setComment, setQuantity } from '../../redux/cartReducer'
+import { getAll, getCount, getTotalPrice, removeProductAndSave, increaseQuantityAndSave, decreaseQuantityAndSave, setRequestAndSave, setQuantityAndSave } from '../../redux/cartReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import { ListGroup } from 'react-bootstrap';
 import { Button, FormControl, Form } from 'react-bootstrap';
@@ -11,6 +11,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { IMGS_URL } from '../../config';
+import styles from './Cart.module.scss';
 
 const Cart = () => {
     const navigate = useNavigate()
@@ -19,23 +20,23 @@ const Cart = () => {
     const totalPrice = useSelector(getTotalPrice)
     const dispatch = useDispatch();
 
-    const handleIncrease = (product) => dispatch(increaseQuantity(product));
-    const handleDecrease = (product) => dispatch(decreaseQuantity(product));
-    const handleRemove = (product) => dispatch(removeProduct(product));
+    const handleIncrease = (product) => dispatch(increaseQuantityAndSave(product));
+    const handleDecrease = (product) => dispatch(decreaseQuantityAndSave(product));
+    const handleRemove = (product) => dispatch(removeProductAndSave(product));
 
     const handleSetQuantity = (e, product) => {
-        dispatch(setQuantity({
+        dispatch(setQuantityAndSave({
             id: product.id,
-            title: product.name,
+            name: product.name,
             price: product.price,
             quantity: Math.max(1, Number(e.target.value)),
         }));
     };
 
-    const handleCommentChange = (e, product) => {
-        dispatch(setComment({
+    const handleRequestChange = (e, product) => {
+        dispatch(setRequestAndSave({
             id: product.id,
-            comment: e.target.value,
+            specialRequest: e.target.value,
         }));
     };
 
@@ -60,17 +61,16 @@ const Cart = () => {
                                 <div className="py-3 d-flex mb-3 mb-md-0 w-50 justify-content-center justify-content-md-start ">
                                     <img
                                         src={IMGS_URL + product.images?.[0]}
-                                        alt={product.title}
-                                        style={{ width: '60px', height: '60px', objectFit: 'cover', marginTop: '0.5rem' }}
-                                        className="me-3 rounded"
+                                        alt={product.name}
+                                        className={`me-3 rounded ${styles.cartImage}`}
                                     />
                                     <div>
-                                        <h2>  <strong className="mb-1 fs-5">{product.title}</strong>  </h2>
+                                        <h2>  <strong className="mb-1 fs-5">{product.name}</strong>  </h2>
                                         <div> {product.price}zł</div>
                                     </div>
                                 </div>
 
-                                <div className="d-flex align-items-center mb-3 mb-md-0" style={{ maxWidth: '180px' }}>
+                                <div className={`d-flex align-items-center mb-3 mb-md-0" ${styles.controls}`}>
                                     <Button variant="outline-secondary" onClick={() => handleDecrease(product)}>
                                         <FontAwesomeIcon icon={faMinus} />
                                     </Button>
@@ -96,8 +96,8 @@ const Cart = () => {
                                 as="textarea"
                                 rows={2}
                                 placeholder="Add a comment..."
-                                value={product.comment || ""}
-                                onChange={(e) => handleCommentChange(e, product)}
+                                value={product.specialRequest || ""}
+                                onChange={(e) => handleRequestChange(e, product)}
                                 className="my-2"
                             />
                         </ListGroup.Item>

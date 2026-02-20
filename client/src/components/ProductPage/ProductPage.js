@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { API_URL, IMGS_URL } from '../../config';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Alert, Col, Row, Card, Button, FormControl } from 'react-bootstrap';
+import { Col, Row, Card, Button, FormControl } from 'react-bootstrap';
 import {
     faPlus,
     faMinus,
     faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
-import { addProduct } from '../../redux/cartReducer'
+import { addProductAndSave } from '../../redux/cartReducer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './ProductPage.module.scss';
 
@@ -21,13 +21,23 @@ const ProductPage = () => {
     const [product, setProduct] = useState(null)
     const { productId } = useParams()
 
-
     useEffect(() => {
         fetch(`${API_URL}api/products/${productId}`)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                return res.json()
+            })
             .then(data => {
-                setProduct(data)
+                setProduct({
+                    ...data,
+                    images: Array.isArray(data.images) ? data.images : [],
+                })
                 setMainImage(data.images?.[0] || null);
+            })
+            .catch(err => {
+                console.error(err);
+                setProduct(null);
+                alert('Could not load product');
             });
     }, [productId]);
 
@@ -37,9 +47,9 @@ const ProductPage = () => {
     const handleAddToCart = (e) => {
         e.preventDefault();
 
-        dispatch(addProduct({
+        dispatch(addProductAndSave({
             id: product.id,
-            title: product.name,
+            name: product.name,
             price: product.price,
             images: product.images,
             quantity,
@@ -57,9 +67,6 @@ const ProductPage = () => {
                                 <Card.Img
                                     variant="top"
                                     src={IMGS_URL + mainImage}
-                                    // style={{
-                                    //     width: '100%', height: '30rem', objectFit: 'cover', objectPosition: 'center',
-                                    // }}
                                     className={styles.productImage}
                                 />
                                 <div className="d-flex flex-wrap mt-2 gap-2">
@@ -68,8 +75,7 @@ const ProductPage = () => {
                                             key={index}
                                             src={IMGS_URL + img}
                                             className={`${styles.thumbnail} ${img === mainImage ? styles.thumbnailActive : ''}`}
-                                            style={{ width: '9rem' }}
-                                            alt={product.title}
+                                            alt={product.name}
                                             onClick={() => setMainImage(img)}
                                         />
                                     ))}
@@ -85,7 +91,7 @@ const ProductPage = () => {
                                     <span className="fw-bold">Price:</span> {product.price}zł
                                 </Card.Text>
 
-                                <div className="d-flex align-items-center mb-4 ms-2" style={{ maxWidth: '200px' }}>
+                                <div className={`d-flex align-items-center mb-4 ms-2 ${styles.controls}`}>
                                     <Button variant="outline-secondary" onClick={handleDecrease}>
                                         <FontAwesomeIcon icon={faMinus} />
                                     </Button>

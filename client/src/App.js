@@ -1,4 +1,4 @@
-import Container from './components/Container/Container';
+ import Container from './components/Container/Container';
 import NavBar from './components/NavBar/NavBar';
 import Home from './components/Home/Home';
 import { Routes, Route } from 'react-router-dom';
@@ -7,6 +7,7 @@ import Product from './components/ProductPage/ProductPage';
 import Cart from './components/Cart/Cart';
 import Checkout from './components/Checkout/Checkout';
 import 'bootstrap/dist/css/bootstrap.min.css';
+//import { Container } from 'react-bootstrap';
 
 function App() {
   return (

@@ -37,7 +37,7 @@ const Checkout = () => {
                 productId: p.id,
                 quantity: p.quantity,
                 price: p.price,
-                specialRequest: p.specialRequest || undefined,
+                specialRequest: p.specialRequest|| undefined,
             })),
         };
 
@@ -106,10 +106,10 @@ const Checkout = () => {
                                         className="py-3 d-flex justify-content-between align-items-center"
                                     >
                                         <div>
-                                            <h5 className="mb-1">{product.title}</h5>
+                                            <h5 className="mb-1">{product.name}</h5>
                                             <div className="mb-1">single price: {product.price}zł</div>
                                             <div className="mb-1">number: {product.quantity}</div>
-                                            {product.comment && <div className="mb-1">Special request: {product.comment}</div>}
+                                            {product.specialRequest && <div className="mb-1">Special request: {product.specialRequest}</div>}
                                         </div>
                                         <strong>{product.totalPrice} zł</strong>
                                     </ListGroup.Item>

@@ -14,18 +14,51 @@ const RESET_CART = createActionName('RESET_CART');
 const DECREASE_QUANTITY = createActionName('DECREASE_QUANTITY');
 const INCREASE_QUANTITY = createActionName('INCREASE_QUANTITY');
 const SET_QUANTITY = createActionName('SET_QUANTITY');
-const SET_COMMENT = createActionName('SET_COMMENT');
+const SET_REQUEST = createActionName('SET_REQUEST');
 
 export const addProduct = payload => ({ payload, type: ADD_PRODUCT });
 export const removeProduct = payload => ({ payload, type: REMOVE_PRODUCT });
 export const decreaseQuantity = payload => ({ type: DECREASE_QUANTITY, payload });
 export const increaseQuantity = payload => ({ type: INCREASE_QUANTITY, payload });
 export const setQuantity = payload => ({ type: SET_QUANTITY, payload });
-export const setComment = payload => ({ type: SET_COMMENT, payload });
+export const setRequest = payload => ({ type: SET_REQUEST, payload });
 export const resetCart = () => ({ type: RESET_CART });
 
-const saveCartToLocalStorage = (products) => {
-    localStorage.setItem('cart', JSON.stringify({ products }));
+export const addProductAndSave = payload => (dispatch) => {
+    dispatch(addProduct(payload));
+    dispatch(saveCart());
+};
+
+export const removeProductAndSave = payload => (dispatch) => {
+    dispatch(removeProduct(payload));
+    dispatch(saveCart());
+};
+
+export const increaseQuantityAndSave = payload => (dispatch) => {
+    dispatch(increaseQuantity(payload));
+    dispatch(saveCart());
+};
+
+export const decreaseQuantityAndSave = payload => (dispatch) => {
+    dispatch(decreaseQuantity(payload));
+    dispatch(saveCart());
+};
+
+export const setQuantityAndSave = payload => (dispatch) => {
+    dispatch(setQuantity(payload));
+    dispatch(saveCart());
+};
+
+export const setRequestAndSave = payload => (dispatch) => {
+    dispatch(setRequest(payload));
+    dispatch(saveCart());
+};
+
+export const saveCart = () => (dispatch, getState) => {
+    const { cart } = getState();
+    localStorage.setItem('cart', JSON.stringify({
+        products: cart.products
+    }));
 };
 
 const cartReducer = (statePart = initialState.cart, action = {}) => {
@@ -54,7 +87,7 @@ const cartReducer = (statePart = initialState.cart, action = {}) => {
                     },
                 ];
             }
-            saveCartToLocalStorage(updatedProducts);
+
             return {
                 ...statePart,
                 products: updatedProducts,
@@ -67,7 +100,7 @@ const cartReducer = (statePart = initialState.cart, action = {}) => {
                         ? { ...product, quantity: action.payload.quantity, totalPrice: action.payload.quantity * product.price }
                         : product
                 )
-            saveCartToLocalStorage(updatedProducts);
+
             return {
                 ...statePart,
                 products: updatedProducts,
@@ -81,7 +114,7 @@ const cartReducer = (statePart = initialState.cart, action = {}) => {
                         : product
                 )
                 .filter(product => product.quantity > 0);
-            saveCartToLocalStorage(updatedProducts);
+
             return {
                 ...statePart,
                 products: updatedProducts,
@@ -96,7 +129,7 @@ const cartReducer = (statePart = initialState.cart, action = {}) => {
                         ? { ...product, quantity: product.quantity + 1, totalPrice: (product.quantity + 1) * product.price }
                         : product
                 )
-            saveCartToLocalStorage(updatedProducts);
+
             return {
                 ...statePart,
                 products: updatedProducts,
@@ -106,25 +139,22 @@ const cartReducer = (statePart = initialState.cart, action = {}) => {
             let updatedProducts = statePart.products.filter(
                 product => product.id !== action.payload.id
             )
-            saveCartToLocalStorage(updatedProducts);
             return {
                 ...statePart,
                 products: updatedProducts,
             };
         }
         case RESET_CART:
-            saveCartToLocalStorage([]);
             return {
                 ...statePart,
                 products: [],
             };
-        case SET_COMMENT: {
+        case SET_REQUEST: {
             const updatedProducts = statePart.products.map(product =>
                 product.id === action.payload.id
-                    ? { ...product, comment: action.payload.comment }
+                    ? { ...product, specialRequest: action.payload.specialRequest }
                     : product
             );
-            saveCartToLocalStorage(updatedProducts);
             return {
                 ...statePart,
                 products: updatedProducts

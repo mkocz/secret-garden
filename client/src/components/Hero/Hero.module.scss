@@ -13,21 +13,21 @@
   font-weight: normal;
 }
 
-h1 {
+.title {
   font-size: 2rem;
-    font-style: italic;
-    margin-bottom: 20px;
-    text-align: left;
+  font-style: italic;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .hero {
-    background-size: cover;
-    background-position: center;
-    height: 450px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    margin-bottom: 2rem;
+  background-size: cover;
+  background-position: center;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: $color-light;
+  margin-bottom: 2rem;
 }
