@@ -28,9 +28,9 @@ Secret Garden is a simple e-commerce application for garden plants. It allows us
 2. Configure the database connection in the `.env` file:
 
 DATABASE_URL="mysql://USER:PASSWORD@localhost:3306/shop_db"
-````
 
 3. Make sure your MySQL server is running
+````
 
 ### Backend
 
