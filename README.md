@@ -24,12 +24,22 @@ Secret Garden is a simple e-commerce application for garden plants. It allows us
 - **Backend:** NestJS, Prisma, MySQL
 
 ## How to Run
+### Database (MySQL)
+
+1. Create an empty MySQL database (e.g. `shop_db`)
+2. Configure the database connection in the `.env` file:
+
+DATABASE_URL="mysql://USER:PASSWORD@localhost:3306/shop_db"
+
+3. Make sure your MySQL server is running
 
 ### Backend
 
 ````bash
 npm install
 npx prisma generate
+npx prisma migrate dev
+npx prisma db seed
 nest start
 ````
 
