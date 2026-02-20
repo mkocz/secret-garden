@@ -10,10 +10,6 @@ What this means in practice:
 - After a period of inactivity, the first request to the app may take **up to a minute** to respond while the instance “wakes up.”
 - This is expected behavior for Render's free plan and **is not an issue with the application itself**.
 
-If you need the app to be **always available**:
-- Upgrade to a Starter or higher plan on Render.
-- Alternatively, set up a **heartbeat/ping** that periodically sends requests to the app to prevent it from sleeping.
-
 ## Project Overview
 
 Secret Garden is a simple e-commerce application for garden plants. It allows users to browse products, view details, add items to the cart, and place orders. The backend provides an API for viewing orders.
@@ -24,12 +20,15 @@ Secret Garden is a simple e-commerce application for garden plants. It allows us
 - **Backend:** NestJS, Prisma, MySQL
 
 ## How to Run
+
 ### Database (MySQL)
 
+````bash
 1. Create an empty MySQL database (e.g. `shop_db`)
 2. Configure the database connection in the `.env` file:
 
 DATABASE_URL="mysql://USER:PASSWORD@localhost:3306/shop_db"
+````
 
 3. Make sure your MySQL server is running
 
