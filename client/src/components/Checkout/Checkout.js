@@ -5,6 +5,7 @@ import { getAll, getCount, getTotalPrice, resetCart } from '../../redux/cartRedu
 import { useState } from 'react';
 import { API_URL } from '../../config.js'
 import { useNavigate } from 'react-router-dom';
+import { Alert } from '../Alert/Alert.js';
 
 const Checkout = () => {
     const products = useSelector(getAll);
@@ -12,6 +13,9 @@ const Checkout = () => {
     const totalPrice = useSelector(getTotalPrice)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertType, setAlertType] = useState("success");
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -37,7 +41,7 @@ const Checkout = () => {
                 productId: p.id,
                 quantity: p.quantity,
                 price: p.price,
-                specialRequest: p.specialRequest|| undefined,
+                specialRequest: p.specialRequest || undefined,
             })),
         };
 
@@ -51,9 +55,9 @@ const Checkout = () => {
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || 'Failed to send order');
 
-            alert("Order sent!");
-            dispatch(resetCart());
-            navigate('/')
+            setAlertMessage("Order sent!");
+            setAlertType("success");
+            setShowAlert(true);
             return data;
         } catch (err) {
             console.error(err);
@@ -61,8 +65,22 @@ const Checkout = () => {
         }
     };
 
+    const handleAlertClose = () => {
+        setShowAlert(false);
+        dispatch(resetCart());
+        navigate('/');
+    };
+
     return (
         <>
+            {showAlert && (
+                <Alert
+                    message={alertMessage}
+                    type={alertType}
+                    visible={showAlert}
+                    onClose={handleAlertClose}
+                />
+            )}
             <PageTitle>Checkout</PageTitle>
             <div className="container my-5">
                 <Form onSubmit={handleSubmit}>

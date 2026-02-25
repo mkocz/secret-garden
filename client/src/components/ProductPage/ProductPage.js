@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { addProductAndSave } from '../../redux/cartReducer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from "../Alert/Alert";
 import styles from './ProductPage.module.scss';
 
 const ProductPage = () => {
@@ -20,6 +21,10 @@ const ProductPage = () => {
 
     const [product, setProduct] = useState(null)
     const { productId } = useParams()
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertType, setAlertType] = useState("success");
 
     useEffect(() => {
         fetch(`${API_URL}api/products/${productId}`)
@@ -37,7 +42,10 @@ const ProductPage = () => {
             .catch(err => {
                 console.error(err);
                 setProduct(null);
-                alert('Could not load product');
+
+                setAlertMessage("Could not load product");
+                setAlertType("error");
+                setShowAlert(true);
             });
     }, [productId]);
 
@@ -54,11 +62,22 @@ const ProductPage = () => {
             images: product.images,
             quantity,
         }));
-        alert("Product added to the cart!");
+
+        setAlertMessage("Product has been added to the cart!");
+        setAlertType("success");
+        setShowAlert(true);
     };
 
     return (
         <div>
+            {showAlert && (
+                <Alert
+                    message={alertMessage}
+                    type={alertType}
+                    visible={showAlert}
+                    onClose={() => setShowAlert(false)}
+                />
+            )}
             {product &&
                 <Card className='mb-4 p-3'>
                     <Card.Body>

@@ -1,0 +1,21 @@
+.global {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  min-width: 280px;
+  z-index: 1100;
+  transition: all 0.4s ease; 
+  opacity: 0;
+  top: -100px; 
+}
+
+.show {
+  top: 20px; 
+  opacity: 1;
+}
+
+.hide {
+  top: -100px; 
+  opacity: 0;
+}
