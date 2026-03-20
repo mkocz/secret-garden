@@ -1,6 +1,6 @@
 # Secret Garden
 
-Page url: https://secret-garden-8xo4.onrender.com/
+Page url: https://secret-garden-production.up.railway.app
 
 ## Hosting Notes on Render
 
