@@ -1,7 +1,7 @@
-import PageTitle from '../PageTitle/PageTitle';
+import PageTitle from '../PageTitle/PageTitle.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row, Button, Form, ListGroup } from 'react-bootstrap';
-import { getAll, getCount, getTotalPrice, resetCart } from '../../redux/cartReducer'
+import { getAll, getCount, getTotalPrice, resetCart } from '../../redux/cartReducer.js'
 import { useState } from 'react';
 import { API_URL } from '../../config.js'
 import { useNavigate } from 'react-router-dom';
