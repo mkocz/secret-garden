@@ -9,7 +9,7 @@ Secret Garden is a simple e-commerce application for garden plants. It allows us
 ## Technologies
 
 - **Frontend:** React, Redux, React-Router, Bootstrap
-- **Backend:** NestJS, Prisma, MySQL
+- **Backend:** NestJS, Prisma, PostgreSQL
 
 ## How to Run
 
